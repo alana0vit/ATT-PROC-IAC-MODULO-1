@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro de Entidade - MediaShelf</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Cadastrar Filme / Livro</h2>
+    <form id="entityForm" enctype="multipart/form-data">
+      <input type="text" name="nome" placeholder="Nome" required>
+      <input type="text" name="tipo" placeholder="Tipo (Filme, Livro...)" required>
+      <textarea name="descricao" placeholder="Descrição" rows="4" style="margin-bottom:1rem;"></textarea>
+      <input type="file" name="imagem" accept="image/*" required>
+      <button type="submit">Cadastrar</button>
+      <p><a href="listagem.html">Ver Lista de Entidades</a></p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('entityForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+
+      try {
+        const res = await fetch('http://localhost:3000/entidades', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await res.json();
+        alert(result.message || 'Entidade cadastrada com sucesso!');
+      } catch (err) {
+        console.error(err);
+        alert('Erro ao cadastrar entidade.');
+      }
+    });
+  </script>
+</body>
+</html>

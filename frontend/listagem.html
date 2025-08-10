@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Entidades - MediaShelf</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background-color: #fff;
+    }
+    .card img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Entidades Cadastradas</h2>
+    <div id="entityList"></div>
+    <p><a href="cadastro-entidade.html">Cadastrar nova</a></p>
+  </div>
+
+  <script>
+    async function carregarEntidades() {
+      try {
+        const res = await fetch('http://localhost:3000/entidades');
+        const entidades = await res.json();
+        
+        const listContainer = document.getElementById('entityList');
+        listContainer.innerHTML = '';
+
+        entidades.forEach(entidade => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <h3>${entidade.nome}</h3>
+            <p><strong>Tipo:</strong> ${entidade.tipo}</p>
+            <img src="${entidade.urlImagem}" alt="${entidade.nome}">
+            <p>${entidade.descricao}</p>
+          `;
+          listContainer.appendChild(card);
+        });
+      } catch (err) {
+        console.error(err);
+        alert('Erro ao carregar entidades.');
+      }
+    }
+
+    carregarEntidades();
+  </script>
+</body>
+</html>
